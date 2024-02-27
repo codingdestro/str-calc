@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./",
     "lib": ["ESNext"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
+    "paths": {
+      "@/*": ["src/"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "types": ["bun-types"],
+    "include": ["src/**/*.ts"],
 
     /* Linting */
     "skipLibCheck": true,
