@@ -1,6 +1,6 @@
 {
   "name": "@codingdestro/str-calc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A string calculator function",
   "module": "src/main.ts",
   "main": "dist/main.js",
@@ -12,7 +12,7 @@
     "codingdestro"
   ],
   "scripts": {
-    "build": "bun build --target=node ./src/main.ts --outfile=dist/index.js && bun run build:declaration",
+    "build": "bun build --target=node ./src/main.ts --outfile=dist/main.js && bun run build:declaration",
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
     "postbuild": "rm tsconfig.types.tsbuildinfo"
   },
