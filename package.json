@@ -1,6 +1,15 @@
 {
-  "name": "str-calc",
-  "module": "index.ts",
+  "name": "@codingdestro/str-calc",
+  "version": "1.0.1",
+  "description": "A string calculator function",
+  "module": "src/main.ts",
+  "keywords": [
+    "str-calc",
+    "str-calculator",
+    "calculator",
+    "codingdestro"
+  ],
+  "author": "codingdestro",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
