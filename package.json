@@ -14,7 +14,7 @@
   "scripts": {
     "build": "bun build --target=node ./src/main.ts --outfile=dist/index.js && bun run build:declaration",
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
-    "postbuild": "rimraf tsconfig.types.tsbuildinfo"
+    "postbuild": "rm tsconfig.types.tsbuildinfo"
   },
   "author": "codingdestro",
   "repository": "https//:github.com/codingdestro/string-calc",

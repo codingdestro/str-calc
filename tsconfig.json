@@ -19,12 +19,13 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "types": ["bun-types"],
-    "include": ["src/**/*.ts"],
 
     /* Linting */
     "skipLibCheck": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+
+  "include": ["./src/**/*.ts"]
 }
