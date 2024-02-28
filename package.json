@@ -17,8 +17,8 @@
     "postbuild": "rm tsconfig.types.tsbuildinfo"
   },
   "author": "codingdestro",
-  "repository": "https//:github.com/codingdestro/string-calc",
-  "homepage": "https//:github.com/codingdestro/string-calc",
+  "repository": "https://github.com/codingdestro/string-calc",
+  "homepage": "https://github.com/codingdestro/string-calc",
   "type": "module",
   "files": [
     "dist/*.js",
