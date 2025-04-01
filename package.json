@@ -1,6 +1,6 @@
 {
   "name": "@codingdestro/str-calc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A string calculator function",
   "module": "src/main.ts",
   "main": "dist/main.js",
@@ -17,8 +17,8 @@
     "postbuild": "rm tsconfig.types.tsbuildinfo"
   },
   "author": "codingdestro",
-  "repository": "https://github.com/codingdestro/string-calc",
-  "homepage": "https://github.com/codingdestro/string-calc",
+  "repository": "https://github.com/codingdestro/str-calc",
+  "homepage": "https://github.com/codingdestro/str-calc",
   "type": "module",
   "files": [
     "dist/*.js",

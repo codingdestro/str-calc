@@ -10,29 +10,42 @@ export class Node {
   }
 }
 
-//creating a linked list
-class List {
-  public head: Node | null;
-  public tail: Node | null;
+export class List {
+  private head: Node | null;
+  private tail: Node | null;
+
   constructor() {
     this.head = null;
     this.tail = null;
   }
 
-  init(node: Node) {
-    this.head = node;
-    this.tail = node;
+  public isEmpty(): boolean {
+    return this.head === null;
   }
 
-  addNode(val: string | number) {
-    let newNode = new Node(val);
-    if (this.head === null) {
-      this.init(newNode);
+  public addNode(val: string | number): Node {
+    const newNode = new Node(val);
+    
+    if (this.isEmpty()) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      if (this.tail) {
+        newNode.prev = this.tail;
+        this.tail.next = newNode;
+        this.tail = newNode;
+      }
     }
-    newNode.prev = this.tail;
-    this!.tail!.next = newNode;
-    this.tail = newNode;
+    
     return newNode;
+  }
+
+  public getHead(): Node | null {
+    return this.head;
+  }
+
+  public getTail(): Node | null {
+    return this.tail;
   }
 }
 
