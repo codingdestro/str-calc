@@ -1,65 +1,84 @@
-
----
-
 # String Calculator
 
-The String Calculator is a JavaScript function designed to evaluate arithmetic expressions represented as strings. It can handle basic arithmetic operations such as addition (+), subtraction (-), multiplication (x), and division (/). The function parses the input string and calculates the result.
+A robust JavaScript library for evaluating arithmetic expressions represented as strings. This library provides a simple and efficient way to parse and calculate mathematical expressions with support for basic arithmetic operations.
+
+## Features
+
+- Evaluate arithmetic expressions from strings
+- Support for basic arithmetic operations:
+  - Addition (+)
+  - Subtraction (-)
+  - Multiplication (*)
+  - Division (/)
+  - Parentheses for grouping ()
+- Simple and intuitive API
+- Lightweight and dependency-free
 
 ## Installation
 
-To use the String Calculator function, follow these steps:
-
-1. Clone this repository to your local machine:
-
-   ```bash
-   npm i @codingdestro/str-calc
-   ```
-
-2. Import the function:
-
-   ```js
-   const stringCalc = require("stringCalc")
-   ```
-
-## Usage
-
-To use the String Calculator function, simply call it with a string representing the arithmetic expression you want to evaluate. For example:
-
-```javascript
-const result = stringCalc("100-10/2x0+5");
-console.log(result); // Output: 105
+```bash
+npm install @codingdestro/str-calc
 ```
 
-The function will parse the input string and calculate the result according to the standard rules of arithmetic.
+## Quick Start
 
-## Supported Operations
+```javascript
+const stringCalc = require("@codingdestro/str-calc");
 
-The String Calculator function supports the following arithmetic operations:
+// Basic arithmetic
+console.log(stringCalc("100-10/2*0+5")); // Output: 105
+console.log(stringCalc("10+20-5"));      // Output: 25
+console.log(stringCalc("50*2/5"));       // Output: 20
 
-- Addition +
-- Subtraction -
-- Multiplication x
-- Division /
-- Parentheses ()
+// With parentheses
+console.log(stringCalc("100/(2*3)"));    // Output: 20
+```
 
-## Examples
+## API Reference
 
-Here are some examples of valid input strings and their corresponding results:
+### `stringCalc(expression: string): number`
 
-- `"100-10/2x0+5"` => `105`
-- `"10+20-5"` => `25`
-- `"50x2/5"` => `20`
-- `"100/2x3"` => `150`
-- `"100/(2x3)"` => `20`
+Evaluates a mathematical expression represented as a string.
+
+#### Parameters
+- `expression` (string): The arithmetic expression to evaluate
+
+#### Returns
+- (number): The calculated result
+
+#### Examples
+
+```javascript
+// Basic operations
+stringCalc("5 + 3")     // Returns: 8
+stringCalc("10 - 4")    // Returns: 6
+stringCalc("6 * 2")     // Returns: 12
+stringCalc("15 / 3")    // Returns: 5
+
+// Complex expressions
+stringCalc("100-10/2*0+5")  // Returns: 105
+stringCalc("(10+5)*2")      // Returns: 30
+```
 
 ## Error Handling
 
-The function does not currently handle invalid input strings or edge cases such as division by zero. Therefore, it's important to ensure that the input string follows the expected format and does not contain any errors.
+The library includes basic error handling for:
+- Invalid expressions
+- Division by zero
+- Unmatched parentheses
+- Invalid operators
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
+## Support
 
-**please subscribe my youtube channel `codingdestro`**
+If you find this library helpful, please consider:
+- Starring the repository
+- Subscribing to my YouTube channel [codingdestro](https://youtube.com/codingdestro)
+- Reporting bugs or suggesting features through GitHub issues
