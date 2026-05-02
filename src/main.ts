@@ -1,3 +1,7 @@
+import { CalculatorError } from './lib/errors.js';
+
+export { CalculatorError, type ErrorCode } from './lib/errors.js';
+
 type Operator = '+' | '-' | '*' | '/' | '^';
 
 const PRECEDENCE: Record<string, number> = {
@@ -15,41 +19,57 @@ function applyOp(op: Operator, b: number, a: number): number {
     case '-': return a - b;
     case '*': return a * b;
     case '/':
-      if (b === 0) throw new Error('Division by zero');
+      if (b === 0) throw new CalculatorError('MATH_ERROR', 'Division by zero');
       return a / b;
     case '^':
       if (a < 0 && !Number.isInteger(b)) {
-        throw new Error('Invalid power operation: negative non-integer exponent');
+        throw new CalculatorError('MATH_ERROR', 'Invalid power operation: negative non-integer exponent');
       }
       return Math.pow(a, b);
     default:
-      throw new Error(`Unknown operator: ${op}`);
+      throw new CalculatorError('SYNTAX_ERROR', `Unknown operator: ${op}`);
   }
 }
 
 export function stringCalc(expression: string): number {
   if (!expression || expression.trim() === '') {
-    throw new Error('Empty expression');
+    throw new CalculatorError('EMPTY_EXPRESSION', 'Empty expression');
   }
 
   const normalized = expression.replace(/\s+/g, '');
   
-  // Validate brackets and handle empty brackets
+  // Validate invalid characters
+  const invalidCharMatch = normalized.match(/[^0-9+\-*/^().]/);
+  if (invalidCharMatch) {
+    throw new CalculatorError('INVALID_CHAR', `Invalid character detected: '${invalidCharMatch[0]}'`);
+  }
+
+  // Validate brackets
   let bracketCount = 0;
   for (let i = 0; i < normalized.length; i++) {
     if (normalized[i] === '(') {
       bracketCount++;
       if (normalized[i + 1] === ')') {
-        throw new Error('Invalid expression: Calculation error: Empty expression inside brackets');
+        throw new CalculatorError('SYNTAX_ERROR', 'Empty expression inside brackets');
       }
     }
     if (normalized[i] === ')') bracketCount--;
     if (bracketCount < 0) {
-      throw new Error('Invalid expression: Invalid bracket structure: closing bracket without opening bracket');
+      throw new CalculatorError('BRACKET_MISMATCH', 'Closing bracket without opening bracket');
     }
   }
   if (bracketCount > 0) {
-    throw new Error('Invalid expression: Invalid bracket structure: unclosed opening bracket');
+    throw new CalculatorError('BRACKET_MISMATCH', 'Unclosed opening bracket');
+  }
+
+  // Detect consecutive operators (excluding unary minus)
+  if (/[+\-*/^]{2,}/.test(normalized.replace(/[+\-*/^]-/g, 'op-'))) {
+     // This is a bit simplified, but checks for things like ++, +*, etc.
+     // normalized.replace(/[+\-*/^]-/g, 'op-') handles things like 5*-3 by replacing them with 5op-3
+     // which won't match {2,}
+     if (/[+\-*/^]{2,}/.test(normalized.replace(/[+\-*/^]-/g, 'op-'))) {
+       throw new CalculatorError('SYNTAX_ERROR', 'Consecutive operators detected');
+     }
   }
 
   const tokens = normalized.match(/\d*\.?\d+|[+\-*/^()]/g) || [];
@@ -61,7 +81,7 @@ export function stringCalc(expression: string): number {
     if (op === 'u-') {
       const a = values.pop();
       if (a === undefined) {
-        throw new Error('Invalid expression: Calculation error: Invalid operation: missing operands');
+        throw new CalculatorError('MISSING_OPERANDS', 'Missing operand for unary minus');
       }
       values.push(-a);
       return;
@@ -69,7 +89,7 @@ export function stringCalc(expression: string): number {
     const b = values.pop();
     const a = values.pop();
     if (a === undefined || b === undefined) {
-      throw new Error('Invalid expression: Calculation error: Invalid operation: missing operands');
+      throw new CalculatorError('MISSING_OPERANDS', 'Invalid operation: missing operands');
     }
     values.push(applyOp(op as Operator, b, a));
   };
@@ -88,7 +108,7 @@ export function stringCalc(expression: string): number {
       ops.pop(); // Pop '('
     } else if (PRECEDENCE[token]) {
       // Check for unary minus
-      if (token === '-' && (i === 0 || tokens[i - 1] === '(' || PRECEDENCE[tokens[i - 1]])) {
+      if (token === '-' && (i === 0 || tokens[i - 1] === '(' || (PRECEDENCE[tokens[i - 1]] && tokens[i-1] !== 'u-'))) {
         ops.push('u-');
       } else {
         const currentPrec = PRECEDENCE[token];
@@ -108,7 +128,11 @@ export function stringCalc(expression: string): number {
     execute();
   }
 
-  return values[0] ?? 0;
+  if (values.length !== 1) {
+    throw new CalculatorError('SYNTAX_ERROR', 'Invalid expression format');
+  }
+
+  return values[0];
 }
 
 export default stringCalc;
