@@ -1,18 +1,20 @@
-# String Calculator
+# @codingdestro/str-calc
 
-A robust JavaScript library for evaluating arithmetic expressions represented as strings. This library provides a simple and efficient way to parse and calculate mathematical expressions with support for basic arithmetic operations.
+A high-performance, robust string calculator for evaluating arithmetic expressions. Optimized with an $O(N)$ Shunting-yard algorithm variant.
 
 ## Features
 
-- Evaluate arithmetic expressions from strings
-- Support for basic arithmetic operations:
-  - Addition (+)
-  - Subtraction (-)
-  - Multiplication (*)
-  - Division (/)
-  - Parentheses for grouping ()
-- Simple and intuitive API
-- Lightweight and dependency-free
+- **High Performance:** Uses an $O(N)$ two-stack algorithm for efficient single-pass evaluation.
+- **Support for All Basic Operators:**
+  - Addition (`+`), Subtraction (`-`)
+  - Multiplication (`*`), Division (`/`)
+  - Exponentiation (`^`)
+- **Advanced Parsing:**
+  - Full support for parentheses `()` grouping.
+  - Robust **unary minus** handling (e.g., `-10`, `5*-3`, `-(1+2)`).
+- **Structured Error Handling:** Custom `CalculatorError` with specific error codes for easy debugging.
+- **Zero Dependencies:** Lightweight and fast.
+- **TypeScript Support:** Fully typed out-of-the-box.
 
 ## Installation
 
@@ -23,16 +25,45 @@ npm install @codingdestro/str-calc
 ## Quick Start
 
 ```javascript
-const stringCalc = require("@codingdestro/str-calc");
+import stringCalc from "@codingdestro/str-calc";
 
-// Basic arithmetic
+// Basic arithmetic (Follows BODMAS/PEMDAS)
 console.log(stringCalc("100-10/2*0+5")); // Output: 105
-console.log(stringCalc("10+20-5"));      // Output: 25
-console.log(stringCalc("50*2/5"));       // Output: 20
 
-// With parentheses
-console.log(stringCalc("100/(2*3)"));    // Output: 20
+// Exponentiation and negative numbers
+console.log(stringCalc("2^3 + 5*-3"));   // Output: -7 (8 - 15)
+
+// Nested parentheses
+console.log(stringCalc("((10+5)*2)^2"));  // Output: 900
 ```
+
+## Error Handling
+
+The library exports a `CalculatorError` class with specific error codes to help you handle failures programmatically.
+
+```javascript
+import stringCalc, { CalculatorError } from "@codingdestro/str-calc";
+
+try {
+  stringCalc("1 / 0");
+} catch (error) {
+  if (error instanceof CalculatorError) {
+    console.log(error.code);    // "MATH_ERROR"
+    console.log(error.message); // "Division by zero"
+  }
+}
+```
+
+### Error Codes
+
+| Code | Description |
+| :--- | :--- |
+| `EMPTY_EXPRESSION` | The input string is empty or only whitespace. |
+| `INVALID_CHAR` | The expression contains unauthorized characters (e.g., letters). |
+| `SYNTAX_ERROR` | The expression is malformed (e.g., `1 ++ 2`, empty brackets). |
+| `BRACKET_MISMATCH` | Parentheses are not correctly opened or closed. |
+| `MATH_ERROR` | Mathematical errors like division by zero or invalid powers. |
+| `MISSING_OPERANDS` | An operator is missing its required values (e.g., `1 +`). |
 
 ## API Reference
 
@@ -40,33 +71,8 @@ console.log(stringCalc("100/(2*3)"));    // Output: 20
 
 Evaluates a mathematical expression represented as a string.
 
-#### Parameters
-- `expression` (string): The arithmetic expression to evaluate
-
-#### Returns
-- (number): The calculated result
-
-#### Examples
-
-```javascript
-// Basic operations
-stringCalc("5 + 3")     // Returns: 8
-stringCalc("10 - 4")    // Returns: 6
-stringCalc("6 * 2")     // Returns: 12
-stringCalc("15 / 3")    // Returns: 5
-
-// Complex expressions
-stringCalc("100-10/2*0+5")  // Returns: 105
-stringCalc("(10+5)*2")      // Returns: 30
-```
-
-## Error Handling
-
-The library includes basic error handling for:
-- Invalid expressions
-- Division by zero
-- Unmatched parentheses
-- Invalid operators
+- **Parameters:** `expression` (string) - The arithmetic expression to evaluate.
+- **Returns:** `number` - The calculated result.
 
 ## Contributing
 
@@ -74,7 +80,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## Support
 
